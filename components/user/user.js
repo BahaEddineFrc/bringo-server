@@ -44,7 +44,7 @@ function validateUser(user) {
   return Joi.validate(user, schema);
 }
 
- const User = mongoose.model('User', userSchema);
+ const User = mongoose.model('user', userSchema);
 
  exports.User = User; 
 exports.validate = validateUser;

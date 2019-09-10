@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 // Models
-let Restaurant = require('../models/restaurant');
-let User = require('../models/user');
+let Restaurant = require('./restaurant');
+let User = require('../user/user');
+let Category = require('./category');
 
 // Get All Restaurants
 router.get('/restaurants', function(req, res){
@@ -20,6 +21,32 @@ router.get('/restaurant/:id', function(req, res){
       res.send(restaurant);
     });
   });
+
+  // GET Menu Category X
+router.get('/restaurant/:rest_id/category/:cat_id', function(req, res){ //req.params.id??
+  Restaurant.findById(req.params.rest_id, function(err, restaurant){
+    restaurant.menu.findById(req.params.cat_id, function(err, category){
+      res.send(category);
+    })
+  });
+});
+
+  // Get dish X
+  router.get('/restaurant/:rest_id/category/:cat_id/dish/:dish_id', function(req, res){ 
+    Restaurant.findById(req.params.rest_id, function(err, restaurant){
+      
+
+
+
+      restaurant.menu.findById(req.params.cat_id, function(err, category){
+        restaurant.menu.findById(req.params.dish_id, function(err, dish){
+          res.send(dish);
+        })
+      })
+    });
+  });
+
+
 
   // POST Single Restau
 router.post('/restaurant', function(req, res){

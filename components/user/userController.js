@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // Models
-let User = require('../models/user');
+let User = require('./user');
 
 
 // middleware that is specific to this router
@@ -24,7 +24,7 @@ router.get('/user/:id', function(req, res){
     User.findById(req.params.id, function(err, user){
       res.send(user);
     });
-  });
+});
 
   // POST Single User
 router.post('/user', function(req, res){
@@ -59,6 +59,7 @@ router.post('/user', function(req, res){
   });
 
 
+
 // Delete Single User
 router.delete('/:id/delete', function(req, res){
     if(!req.user._id){
@@ -79,6 +80,41 @@ router.delete('/:id/delete', function(req, res){
         });
       }
     });
+});
+
+// Get user Profile
+router.get('/user/profile', function(req, res){
+  User.findById(req.params.id, function(err, user){
+    res.send(user);
+  });
+});
+
+// Get user Settings
+router.get('/user/profile', function(req, res){
+  User.findById(req.params.id, function(err, user){
+    res.send(user);
+  });
+});
+
+// PUT user /signin/
+router.get('/signin/', function(req, res){
+  User.findById(req.params.id, function(err, user){
+    res.send(user);
+  });
+});
+
+// PUT user /signup/
+router.get('/signup/', function(req, res){
+  User.findById(req.params.id, function(err, user){
+    res.send(user);
+  });
+});
+
+// PUT user /signout/
+router.get('/signout/', function(req, res){
+  User.findById(req.params.id, function(err, user){
+    if (!err) res.send(200);
+  });
 });
 
 module.exports = router;
