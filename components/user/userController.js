@@ -57,6 +57,38 @@ router.post('/user', function(req, res){
       });
     }
   });
+  
+  updateProfile
+router.post('/user', function(req, res){
+  console.log("Someone's trying to add user"+req);
+
+    //req.checkBody('email','email is required').notEmpty();
+    //req.checkBody('password','password is required').notEmpty();
+  
+    // Get Errors
+    let errors = false//req.validationErrors();
+  
+    if(errors){
+        console.log(errors);
+    } else {
+      let user = new User();
+      user.fullname = req.body.fullname;
+      user.email = req.body.email;
+      user.password = req.body.password;
+      user.address = req.body.address;
+      user.phone = req.body.phone;
+  
+      user.save(function(err){
+        if(err){
+          console.log(err);
+          return;
+        } else {
+          //req.flash('success','Article Added');
+          res.send(user)
+        }
+      });
+    }
+  });
 
 
 

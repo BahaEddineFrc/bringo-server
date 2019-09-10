@@ -1,4 +1,4 @@
-import { requireAuth } from '../../config/passport'
+import { requireAuth } from './requireAuth'
 import { getAllRestaurants, getRestauById, getCategoryById, getDishById, createRestau, deleteRestau } from './restaurantController'
 
 export default function (router) {

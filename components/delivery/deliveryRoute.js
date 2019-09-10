@@ -1,4 +1,4 @@
-//import { requireAuth } from '../../config/passport'
+import { requireAuth } from './requireAuth'
 import { checkOutDish, requireAuth } from './deliveryController'
 
 export default function (router) {
