@@ -1,4 +1,4 @@
-import { requireAuth } from './requireAuth'
+import { requireAuth } from '../auth/requireAuth'
 import { getAllRestaurants, getRestauById, getCategoryById, getDishById, createRestau, deleteRestau } from './restaurantController'
 
 export default function (router) {

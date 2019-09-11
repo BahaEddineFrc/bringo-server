@@ -1,4 +1,5 @@
-// Models
+const express = require('express');
+const router = express.Router();
 let User = require('../user/user');
 
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -85,3 +86,5 @@ export async function signOut(req, res) {
         return res.status(500).end()
     }
 }
+
+module.exports = router;

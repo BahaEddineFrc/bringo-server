@@ -5,148 +5,73 @@ const router = express.Router();
 let User = require('./user');
 
 
-// middleware that is specific to this router
-router.use(function timeLog (req, res, next) {
-  console.log('Time: ', Date.now())
-  next()
-})
-
-// Get All Users
-router.get('/users', function(req, res){
-  console.log("Someone's trying to fetch users");
-    User.find({},function(err, users){
-    res.send(users);
-  });
-});
-
-// Get Single user
-router.get('/user/:id', function(req, res){
-    User.findById(req.params.id, function(err, user){
-      res.send(user);
+//DONE
+export async function getAllUsers(req, res) {
+  try {
+    User.find({}, function (err, users) {
+      return res.status(200).json(users);
     });
-});
+  } catch (error) {
+    console.log(error)
+    return res.status(500).end()
+  }
+}
 
-  // POST Single User
-router.post('/user', function(req, res){
-  console.log("Someone's trying to add user"+req);
+//DONE
+export async function getUserById(req, res) {
+  try {
+    let user = await User.findOne({ _id: req.body.id })
 
-    //req.checkBody('email','email is required').notEmpty();
-    //req.checkBody('password','password is required').notEmpty();
-  
-    // Get Errors
-    let errors = false//req.validationErrors();
-  
-    if(errors){
-        console.log(errors);
-    } else {
-      let user = new User();
-      user.fullname = req.body.fullname;
-      user.email = req.body.email;
-      user.password = req.body.password;
-      user.address = req.body.address;
-      user.phone = req.body.phone;
-  
-      user.save(function(err){
-        if(err){
-          console.log(err);
-          return;
-        } else {
-          //req.flash('success','Article Added');
-          res.send(user)
-        }
-      });
-    }
-  });
-  
-  updateProfile
-router.post('/user', function(req, res){
-  console.log("Someone's trying to add user"+req);
+    return res.status(200).json(user)
 
-    //req.checkBody('email','email is required').notEmpty();
-    //req.checkBody('password','password is required').notEmpty();
-  
-    // Get Errors
-    let errors = false//req.validationErrors();
-  
-    if(errors){
-        console.log(errors);
-    } else {
-      let user = new User();
-      user.fullname = req.body.fullname;
-      user.email = req.body.email;
-      user.password = req.body.password;
-      user.address = req.body.address;
-      user.phone = req.body.phone;
-  
-      user.save(function(err){
-        if(err){
-          console.log(err);
-          return;
-        } else {
-          //req.flash('success','Article Added');
-          res.send(user)
-        }
-      });
-    }
-  });
+  } catch (error) {
+    console.log(error)
+    return res.status(500).end()
+  }
+}
 
+//DONE
+export async function deleteUser(req, res) {
+  try {
 
+    let query = { _id: req.params.id }
 
-// Delete Single User
-router.delete('/:id/delete', function(req, res){
-    if(!req.user._id){
-      //res.status(500).send();
-    }
-  
-    let query = {_id:req.params.id}
-  
-    User.findById(req.params.id, function(err, user){
-      if(err){
-        res.status(500).send();
+    User.findById(req.params.id, function (err, user) {
+      if (err) {
+        return res.status(500).end();
       } else {
-        User.remove(query, function(err){
-          if(err){
+        User.remove(query, function (err) {
+          if (err) {
             console.log(err);
           }
-          res.send('Success');
+          return res.send(200).json('Success');
         });
       }
     });
-});
+  } catch (error) {
+    console.log(error)
+    return res.status(500).end()
+  }
+}
 
-// Get user Profile
-router.get('/user/profile', function(req, res){
-  User.findById(req.params.id, function(err, user){
-    res.send(user);
-  });
-});
+//DONE
+export async function updateProfile(req, res) {
+  try {
 
-// Get user Settings
-router.get('/user/profile', function(req, res){
-  User.findById(req.params.id, function(err, user){
-    res.send(user);
-  });
-});
+    req.user.fullname = req.body.fullname
+    req.user.email = req.body.email
+    req.user.password = req.body.password
+    req.user.address = req.body.address
+    req.user.phone = req.body.phone
+    req.user.pic = req.body.pic
 
-// PUT user /signin/
-router.get('/signin/', function(req, res){
-  User.findById(req.params.id, function(err, user){
-    res.send(user);
-  });
-});
+    await req.user.save()
+    return res.status(204).end()
 
-// PUT user /signup/
-router.get('/signup/', function(req, res){
-  User.findById(req.params.id, function(err, user){
-    res.send(user);
-  });
-});
-
-// PUT user /signout/
-router.get('/signout/', function(req, res){
-  User.findById(req.params.id, function(err, user){
-    if (!err) res.send(200);
-  });
-});
+  } catch (error) {
+    console.log(error)
+    return res.status(500).end()
+  }
+}
 
 module.exports = router;

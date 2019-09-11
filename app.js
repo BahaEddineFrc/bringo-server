@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app = express();
+import routes from './config/routes'
 
 const hostname = '127.0.0.1';
 const port = 3000;
@@ -15,10 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Route Files
-let restaurants = require('./routes/restaurantController');
-let users = require('./routes/userController');
-app.use('/restaurant', restaurants); 
-app.use('/user', users);
+app.use(routes)
 
 // Start Server
 app.listen(port, hostname, (err) => {
