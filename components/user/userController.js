@@ -59,13 +59,11 @@ export async function deleteUser(req, res) {
   }
 }
 
-//DONE
+//DONE and tested for token
 export async function updateProfile(req, res) {
   try {
-
     req.user.fullname = req.body.fullname
     req.user.email = req.body.email
-    req.user.password = req.body.password
     req.user.address = req.body.address
     req.user.phone = req.body.phone
     req.user.pic = req.body.pic
