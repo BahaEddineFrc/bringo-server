@@ -8,9 +8,11 @@ let User = require('./user');
 //DONE
 export async function getAllUsers(req, res) {
   try {
-    User.find({}, function (err, users) {
-      return res.status(200).json(users);
+    
+      User.find().exec(function(err, users) {
+        return res.status(200).json(users);
     });
+    
   } catch (error) {
     console.log(error)
     return res.status(500).end()
@@ -20,9 +22,12 @@ export async function getAllUsers(req, res) {
 //DONE
 export async function getUserById(req, res) {
   try {
-    let user = await User.findOne({ _id: req.body.id })
+    //let user = await User.find({ _id: req.body.id })
 
-    return res.status(200).json(user)
+    User.findById(req.params.id, (err, user) => {
+      return res.status(200).json(user)
+    });
+    
 
   } catch (error) {
     console.log(error)

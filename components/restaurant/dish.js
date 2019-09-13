@@ -4,10 +4,8 @@ const dishSchema = mongoose.Schema({
     name:{type: String},
     description:{type: String},
     sizes:[{
-            size:{
-              type:String,
-              price:String
-            }
+            size:{type:String},
+            price:{type:String}
     }],
     pic:{type: String}
   });

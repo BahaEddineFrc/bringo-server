@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-let User = require('./category');
+import mongoose, { Schema } from 'mongoose'
+const Category = require('./category');
 
 const restauSchema = mongoose.Schema({
   name: {
@@ -21,13 +21,22 @@ const restauSchema = mongoose.Schema({
   pic: {
     type: String
   },
-  menu: [{
-    sectionTitle: { type: String }, //breakfast, lunch, dinner, dessert
-    sectionCategories: [{
-      category: { type: Schema.Types.ObjectId, ref: 'category' } //pizza, spaghetti, sandwich
-    }]
-  }]
-  
+  menu: [
+    {
+      sectionTitle: { type: String } ,//breakfast, lunch, dinner, dessert
+      sectionCategories: [{
+        type: Schema.Types.ObjectId, ref: 'Category'
+      }] 
+    }
+  ]
+
 });
 
 const Restaurant = module.exports = mongoose.model('restaurant', restauSchema);
+
+
+/* 
+sectionCategories: [{
+        type: String //category:{ type: Schema.Types.ObjectId, ref: 'category' } //pizza, spaghetti, sandwich
+      }]
+      */

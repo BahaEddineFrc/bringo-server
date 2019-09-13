@@ -23,6 +23,7 @@ export async function signUp(req, res) {
         user.address = req.body.address
         user.phone = req.body.phone
         user.pic = req.body.pic
+        user.token = "token"
 
         user = await User.create(user)
 
@@ -43,7 +44,7 @@ export async function signIn(req, res) {
         let user = await User.findOne({ email: req.body.email })
 
         if (!user) return res.status(401).json({ error: 'Wrong email' })
-        if (!user.comparePassword(req.body.password)) return res.status(401).json({ code: 144, error: 'Wrong Credentials' })
+        if (!user.comparePassword(req.body.password)) return res.status(401).json({error: 'Wrong Credentials' })
 
         return res.status(200).json(user)
 

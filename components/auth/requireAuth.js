@@ -1,4 +1,4 @@
-import { User } from '../user/user'
+import User from '../user/user'
 
 export const requireAuth = async (req, res, next) => {
   try {

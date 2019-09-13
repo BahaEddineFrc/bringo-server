@@ -1,12 +1,22 @@
 import { requireAuth } from '../auth/requireAuth'
-import { getAllRestaurants, getRestauById, getCategoryById, getDishById, createRestau, deleteRestau } from './restaurantController'
+import { getAllRestaurants, getRestauById, 
+  getAllCategories,getAllDishes,createDish,deleteCategory,deleteDish,
+  getCategoryById, getDishById, createRestau, deleteRestau, createCategory } from './restaurantController'
 
 export default function (router) {
   router.get('/restaurants', getAllRestaurants)
   router.get('/restaurant/:id', getRestauById)
-  router.get('/restaurant/:rest_id/category/:cat_id', getCategoryById)
-  router.get('/restaurant/dish/:dish_id', getDishById)
-
   router.post('/restaurant', requireAuth, createRestau)
-  router.delete('/restaurant/:id', requireAuth, deleteRestau)
+  router.delete('/restaurant/:id', deleteRestau)
+
+
+  router.get('/categories', getAllCategories)
+  router.get('/category/:id', getCategoryById)
+  router.post('/category', createCategory)
+  router.delete('/category/:id', requireAuth, deleteCategory)
+
+  router.get('/dishes', getAllDishes)
+  router.get('/dish/:id', getDishById)
+  router.post('/dish', createDish)
+  router.delete('/dish/:id', deleteDish)
 }

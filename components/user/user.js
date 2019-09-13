@@ -29,7 +29,4 @@ const userSchema = mongoose.Schema({
     }
   });
 
- const User = mongoose.model('user', userSchema);
-
- exports.User = User; 
-exports.validate = validateUser;
+ const User = module.exports = mongoose.model('User', userSchema);
