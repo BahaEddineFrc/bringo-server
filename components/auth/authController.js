@@ -1,16 +1,19 @@
 const express = require('express');
 const router = express.Router();
 let User = require('../user/user');
+const crypto = require('crypto')
 
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/
 
-//DONE
+//DONE and tested
 export async function signUp(req, res) {
     try {
         if (!req.body.email) return res.status(400).json({ error: 'email cannot be empty' })
         if (!req.body.password) return res.status(400).json({ error: 'Password cannot be empty' })
         if (!req.body.fullname) return res.status(400).json({ error: 'Name cannot be empty' })
-        if (!emailRegex.test(user.email)) return res.status(400).json({error: 'Wrong email form' })
+        if (!emailRegex.test(req.body.email)) return res.status(400).json({error: 'Wrong email form' })
+        if (!urlRegex.test(req.body.pic)) return res.status(400).json({error: 'Wrong pic link form' })
 
         let user = await User.findOne({ email: req.body.email })
 
@@ -23,7 +26,8 @@ export async function signUp(req, res) {
         user.address = req.body.address
         user.phone = req.body.phone
         user.pic = req.body.pic
-        user.token = "token"
+        
+        user.token = crypto.createHash('sha256').update(crypto.randomBytes(48).toString('hex')).digest('hex')
 
         user = await User.create(user)
 
@@ -34,7 +38,7 @@ export async function signUp(req, res) {
     }
 }
 
-//DONE
+//DONE and tested
 export async function signIn(req, res) {
     try {
         if (!req.body.email) return res.status(400).json({ error: 'email cannot be empty' })
@@ -44,7 +48,12 @@ export async function signIn(req, res) {
         let user = await User.findOne({ email: req.body.email })
 
         if (!user) return res.status(401).json({ error: 'Wrong email' })
-        if (!user.comparePassword(req.body.password)) return res.status(401).json({error: 'Wrong Credentials' })
+        if (!user.password === req.body.password) return res.status(401).json({error: 'Wrong Credentials' })
+
+
+        user.token = crypto.createHash('sha256').update(crypto.randomBytes(48).toString('hex')).digest('hex')
+        
+        user = await user.save()
 
         return res.status(200).json(user)
 
@@ -54,7 +63,7 @@ export async function signIn(req, res) {
     }
 }
 
-//DONE
+//DONE and tested
 export async function changePassword(req, res) {
     try {
         const { oldPassword, newPassword } = req.body
@@ -62,8 +71,10 @@ export async function changePassword(req, res) {
         if (!oldPassword) return res.status(400).json({ error: 'Old password cannot be empty' })
         if (!newPassword) return res.status(400).json({ error: 'New password cannot be empty' })
         
-        if (!req.user.comparePassword(oldPassword)) return  res.status(401).json({ error: 'Old password mismatch' })
+        if (!req.user.oldPassword ===oldPassword) return  res.status(401).json({ error: 'Old password mismatch' })
         //if (newPassword.length < 8) return res.status(400).json({ code: 104, error: 'Password should contain eight characters or more' })
+
+        req.user.password = newPassword
 
         await req.user.save()
         return res.status(204).end()
@@ -74,12 +85,10 @@ export async function changePassword(req, res) {
     }
 }
 
-//DONE BUT EDITABLE
+//DONE and tested
 export async function signOut(req, res) {
     try {
-        //const token = req.headers.authorization.split(' ')[1]
-        //req.user.devices = req.user.devices.filter(device => device.token != token)
-        req.headers.authorization = ''
+        req.user.token = null
         await req.user.save()
         return res.status(204).end()
     } catch (error) {
