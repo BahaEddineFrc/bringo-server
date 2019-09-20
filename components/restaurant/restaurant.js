@@ -24,9 +24,9 @@ const restauSchema = mongoose.Schema({
   menu: [
     {
       sectionTitle: { type: String } ,//breakfast, lunch, dinner, dessert
-      sectionCategories: [{
-        type: Schema.Types.ObjectId, ref: 'Category'
-      }] 
+      sectionCategories: [
+        {cat: { type: Schema.Types.ObjectId, ref: 'Category' }}
+    ] 
     }
   ]
 
