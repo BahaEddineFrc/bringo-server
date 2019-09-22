@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 
 app.use(routes)
 
-app.listen(port, hostname, (err) => {
+app.listen(process.env.PORT || port, hostname, (err) => {
     if (err) console.log(err);
     else  console.log('Server started on port 3000...');
 })
