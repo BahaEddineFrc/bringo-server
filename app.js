@@ -10,7 +10,8 @@ import routes from './config/routes'
 const hostname = '127.0.0.1';
 const port = 3000;
 
-mongoose.connect('mongodb://127.0.0.1:27017/bringo-server',{ useNewUrlParser: true })
+//mongoose.connect('mongodb://127.0.0.1:27017/bringo-server',{ useNewUrlParser: true })
+mongoose.connect('mongodb://bringo_db:bringo_db0@ds341247.mlab.com:41247/bringo-server')
 .then(() => console.log("Connected to MongoDB..."))
 .catch(err => console.error("Could not connect to MongoDB..."));
 

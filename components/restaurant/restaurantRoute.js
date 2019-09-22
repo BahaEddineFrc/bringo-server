@@ -6,7 +6,7 @@ import { getAllRestaurants, getRestauById,
 export default function (router) {
   router.get('/restaurants', getAllRestaurants)
   router.get('/restaurant/:id', getRestauById)
-  router.post('/restaurant', requireAuth, createRestau)
+  router.post('/restaurant', createRestau)
   router.delete('/restaurant/:id', deleteRestau)
 
 
