@@ -7,7 +7,7 @@ const app = express();
 
 import routes from './config/routes'
 
-const hostname = '127.0.0.1';
+//const hostname = '127.0.0.1';
 const port = 3000;
 
 //mongoose.connect('mongodb://127.0.0.1:27017/bringo-server',{ useNewUrlParser: true })
@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 
 app.use(routes)
 
-app.listen(process.env.PORT || port, hostname, (err) => {
+app.listen(process.env.PORT || port, (err) => {
     if (err) console.log(err);
     else  console.log('Server started on port 3000...');
 })
