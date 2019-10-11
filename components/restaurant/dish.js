@@ -7,6 +7,7 @@ const dishSchema = mongoose.Schema({
             size:{type:String},
             price:{type:String}
     }],
+    category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
     pic:{type: String}
   });
 

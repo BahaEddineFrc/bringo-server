@@ -21,14 +21,14 @@ export async function getAllRestaurants(req, res) {
 
 export async function getRestauById(req, res) {
   try {
-    //    const delivery = await Restaurant.findOne({ _id: req.params.id })
-    Restaurant.findById(req.params.id, function (err, restaurant) {
-      return res.status(200).json(restaurant);
-    });
-  } catch (error) {
+    var restaurant= await Restaurant.findOne({ _id: req.params.id }).populate("menu.sectionCategories.cat")
+    
+    return res.status(200).json(restaurant);
+
+    } catch (error) {
     console.log(error)
     return res.status(500).end()
-  }
+   }
 }
 
 export async function getCategoryById(req, res) {
@@ -43,7 +43,7 @@ export async function getCategoryById(req, res) {
 }
 export async function getDishById(req, res) {
   try {
-    const dish = await Dish.findOne({ _id: req.params.id })
+    const dish = await Dish.findOne({ _id: req.params.id }).populate("category")
     return res.status(200).json(dish);
 
   } catch (error) {
@@ -122,9 +122,9 @@ export async function deleteCategory(req, res) {
 
 export async function getAllDishes(req, res) {
   try {
-    Dish.find({}, function (err, dishes) {
-      return res.status(200).json(dishes);
-    });
+    var dishes = await Dish.find().populate("category")
+
+    return res.status(200).json(dishes);
   } catch (error) {
     console.log(error)
     return res.status(500).end()
@@ -138,6 +138,7 @@ export async function createDish(req, res) {
       dish.description = req.body.description;
       dish.sizes = req.body.sizes;
       dish.pic = req.body.pic;
+      dish.category = req.body.category;
 
       dish = await Dish.create(dish)
       return res.status(200).json(dish);
