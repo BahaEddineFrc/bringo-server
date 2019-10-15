@@ -10,9 +10,10 @@ let Dish = require('./dish');
 //DONE
 export async function getAllRestaurants(req, res) {
   try {
-    Restaurant.find({}, function (err, restaurants) {
-      return res.status(200).json(restaurants);
-    });
+
+    var restaurants = await Restaurant.find().populate("menu.sectionCategories.cat")
+    return res.status(200).json(restaurants);
+    
   } catch (error) {
     console.log(error)
     return res.status(500).end()
