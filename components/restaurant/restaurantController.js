@@ -41,6 +41,20 @@ export async function getCategoryById(req, res) {
     return res.status(500).end()
   }
 }
+
+export async function getDishesByCategory(req, res) {
+  try {
+    const dishes = await Dish.find({restaurant: req.params.restauId, category: req.params.categoryId}) 
+    console.log(req.params.restauId+" "+req.params.categoryId)
+    console.log("dishes : "+dishes)
+    return res.status(200).json(dishes);
+
+  } catch (error) {
+    console.log(error)
+    return res.status(500).end()
+  }
+}
+
 export async function getDishById(req, res) {
   try {
     const dish = await Dish.findOne({ _id: req.params.id }).populate("category")
@@ -139,6 +153,7 @@ export async function createDish(req, res) {
       dish.sizes = req.body.sizes;
       dish.pic = req.body.pic;
       dish.category = req.body.category;
+      dish.restaurant = req.body.restaurant;
 
       dish = await Dish.create(dish)
       return res.status(200).json(dish);
@@ -156,12 +171,24 @@ export async function deleteDish(req, res) {
         if (err) {
           return res.status(500).end()
         } else {
-          Dish.remove(query, function (err) {
+          Dish.deleteOne(query, function (err) {
             if (err) { console.log(err); return res.status(500).end() }
             return res.status(200).json('Success deleting dish') 
           });
         }
       });
+  } catch (error) {
+    console.log(error)
+    return res.status(500).end()
+  }
+}
+export async function deleteAllDishes(req, res) {
+  try {
+          Dish.deleteMany({}, function (err) {
+            if (err) { console.log(err); return res.status(500).end() }
+            return res.status(200).json('Success deleting all dishes') 
+          });
+        
   } catch (error) {
     console.log(error)
     return res.status(500).end()
@@ -190,3 +217,7 @@ export async function deleteRestau(req, res) {
 }
 
 module.exports = router;
+
+
+//restaus 5d86d8c2956ab02c8ce2a976 5d86d8e2956ab02c8ce2a984
+//categories 5d86d8596009992b417f553e 5da4fc52b7ba832cb091f83e
