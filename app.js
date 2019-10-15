@@ -1,14 +1,14 @@
-import express from 'express'
-
-//const express = require('express');
+const express = require('express');
 const mongoose = require('mongoose');
+const https = require('https');
 const bodyParser = require('body-parser');
-const app = express();
-
+const fs = require('fs');
 import routes from './config/routes'
 
-//const hostname = '127.0.0.1';
-const port = 3000;
+const app = express();
+
+var privateKey = fs.readFileSync('cert/client-key.pem').toString();
+var certificate = fs.readFileSync('cert/client-cert.pem').toString();  
 
 //mongoose.connect('mongodb://127.0.0.1:27017/bringo-server',{ useNewUrlParser: true })
 mongoose.connect('mongodb://bringo_db:bringo_db0@ds341247.mlab.com:41247/bringo-server')
@@ -20,7 +20,8 @@ app.use(bodyParser.json());
 
 app.use(routes)
 
-app.listen(process.env.PORT || port, (err) => {
+//https.createServer({key: privateKey, cert: certificate}, app)
+app.listen(process.env.PORT || 3000, (err) => {
     if (err) console.log(err);
     else  console.log('Server started on port 3000...');
 })
