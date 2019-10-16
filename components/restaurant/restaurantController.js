@@ -46,7 +46,7 @@ export async function getCategoryById(req, res) {
 export async function getDishesByCategory(req, res) {
   try {
     const dishes = await Dish.find({restaurant: req.params.restauId, category: req.params.categoryId}).populate("category") 
-
+    console.log("restaurant: "+req.params.restauId+" category: "+req.params.categoryId)
     return res.status(200).json(dishes);
 
   } catch (error) {
